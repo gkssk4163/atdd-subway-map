@@ -78,7 +78,6 @@ public class StationAcceptanceTest {
                         .when().get("/stations")
                         .then().log().all()
                         .extract().jsonPath().getList("name", String.class).size();
-
         assertThat(stationCount).isEqualTo(2);
     }
 
@@ -102,7 +101,7 @@ public class StationAcceptanceTest {
                         .then().log().all().statusCode(HttpStatus.CREATED.value())
                         .extract();
 
-        int id = response.body().jsonPath().get("id");
+        long id = response.body().jsonPath().getLong("id");
 
         // when
         RestAssured.given().log().all()
