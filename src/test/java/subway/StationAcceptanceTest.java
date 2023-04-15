@@ -46,9 +46,9 @@ public class StationAcceptanceTest {
      * When 지하철역 목록을 조회하면
      * Then 2개의 지하철역을 응답 받는다
      */
-    @DisplayName("지하철역 목록 조회 인수 테스트")
+    @DisplayName("지하철역 목록을 조회한다")
     @Test
-    void createTwoStation() {
+    void getStations() {
         // given
         String[] stationNames = {"강남역", "잠실역"};
         for (String stationName : stationNames) {
@@ -72,10 +72,10 @@ public class StationAcceptanceTest {
      * When 그 지하철역을 삭제하면
      * Then 그 지하철역 목록 조회 시 생성한 역을 찾을 수 없다
      */
-    @DisplayName("지하철역 제거 인수 테스트")
+    @DisplayName("지하철역을 삭제한다.")
     @Test
     void deleteStation() {
-        // Given
+        // given
         Map<String, String> params = new HashMap<>();
         params.put("name", "강남역");
 
