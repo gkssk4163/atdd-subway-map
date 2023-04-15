@@ -34,7 +34,7 @@ public class StationAcceptanceTest {
         ExtractableResponse<Response> response = requestCreateStation(params);
 
         // then
-        assertThat(response.statusCode()).isEqualTo(HttpStatus.CREATED.value());
+        successCreateStation(response);
 
         // then
         List<String> stationNames = requestGetStations().getList("name", String.class);
@@ -49,18 +49,21 @@ public class StationAcceptanceTest {
     @DisplayName("지하철역 목록 조회 인수 테스트")
     @Test
     void createTwoStation() {
+        // given
         String[] stationNames = {"강남역", "잠실역"};
-        // when
         for (String stationName : stationNames) {
             Map<String, String> params = new HashMap<>();
             params.put("name", stationName);
 
             ExtractableResponse<Response> response = requestCreateStation(params);
-            assertThat(response.statusCode()).isEqualTo(HttpStatus.CREATED.value());
+            successCreateStation(response);
         }
 
+        // when
+        JsonPath allStations = requestGetStations();
+
         // then
-        int stationCount = requestGetStations().getList("name", String.class).size();
+        int stationCount = allStations.getList("name", String.class).size();
         assertThat(stationCount).isEqualTo(2);
     }
 
@@ -77,13 +80,13 @@ public class StationAcceptanceTest {
         params.put("name", "강남역");
 
         ExtractableResponse<Response> response = requestCreateStation(params);
-        assertThat(response.statusCode()).isEqualTo(HttpStatus.CREATED.value());
+        successCreateStation(response);
 
         long id = response.body().jsonPath().getLong("id");
 
         // when
         ExtractableResponse<Response> deleteResponse = requestDeleteStation(id);
-        assertThat(deleteResponse.statusCode()).isEqualTo(HttpStatus.NO_CONTENT.value());
+        successDeleteStation(deleteResponse);
 
         // then
         List<String> stationNames = requestGetStations().getList("name", String.class);
@@ -112,6 +115,14 @@ public class StationAcceptanceTest {
                 .when().get("/stations")
                 .then().log().all()
                 .extract().jsonPath();
+    }
+
+    private static void successCreateStation(ExtractableResponse<Response> response) {
+        assertThat(response.statusCode()).isEqualTo(HttpStatus.CREATED.value());
+    }
+
+    private static void successDeleteStation(ExtractableResponse<Response> deleteResponse) {
+        assertThat(deleteResponse.statusCode()).isEqualTo(HttpStatus.NO_CONTENT.value());
     }
 
 }
