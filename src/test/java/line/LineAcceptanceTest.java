@@ -25,6 +25,7 @@ public class LineAcceptanceTest {
     void setUp() {
         지하철역_생성("지하철역");
         지하철역_생성("새로운지하철역");
+        지하철역_생성("또다른지하철역");
     }
 
     private void 지하철역_생성(String name) {
@@ -127,6 +128,7 @@ public class LineAcceptanceTest {
 
         return RestAssured.given().log().all()
                 .body(params)
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .when().post("/lines")
                 .then().log().all()
                 .statusCode(HttpStatus.CREATED.value())
@@ -155,6 +157,7 @@ public class LineAcceptanceTest {
 
         return RestAssured.given().log().all()
                 .body(params)
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .when().patch("/lines/" + id)
                 .then().log().all().statusCode(HttpStatus.OK.value())
                 .extract();
