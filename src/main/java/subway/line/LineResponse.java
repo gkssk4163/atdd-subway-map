@@ -1,20 +1,20 @@
 package subway.line;
 
+import subway.station.StationResponse;
+
+import java.util.List;
+
 public class LineResponse {
     private Long id;
     private String name;
     private String color;
-    private int upStationId;
-    private int downStationId;
-    private int distance;
+    private List<StationResponse> stations;
 
-    public LineResponse(Long id, String name, String color, int upStationId, int downStationId, int distance) {
+    public LineResponse(Long id, String name, String color, List<StationResponse> stations) {
         this.id = id;
         this.name = name;
         this.color = color;
-        this.upStationId = upStationId;
-        this.downStationId = downStationId;
-        this.distance = distance;
+        this.stations = stations;
     }
 
     public Long getId() {
@@ -29,15 +29,7 @@ public class LineResponse {
         return color;
     }
 
-    public int getUpStationId() {
-        return upStationId;
-    }
-
-    public int getDownStationId() {
-        return downStationId;
-    }
-
-    public int getDistance() {
-        return distance;
+    public List<StationResponse> getStations() {
+        return stations;
     }
 }
