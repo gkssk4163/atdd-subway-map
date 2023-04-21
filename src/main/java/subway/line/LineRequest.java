@@ -3,8 +3,8 @@ package subway.line;
 public class LineRequest {
     private String name;
     private String color;
-    private int upStationId;
-    private int downStationId;
+    private Long upStationId;
+    private Long downStationId;
     private int distance;
 
     public String getName() {
@@ -15,11 +15,11 @@ public class LineRequest {
         return color;
     }
 
-    public int getUpStationId() {
+    public Long getUpStationId() {
         return upStationId;
     }
 
-    public int getDownStationId() {
+    public Long getDownStationId() {
         return downStationId;
     }
 
