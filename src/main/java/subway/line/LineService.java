@@ -38,6 +38,19 @@ public class LineService {
                 .collect(Collectors.toList());
     }
 
+    @Transactional
+    public void updateLineById(Long id, LineRequest lineRequest) {
+        Line line = lineRepository.getById(id);
+        line.updateName(lineRequest.getName());
+        line.updateColor(lineRequest.getColor());
+        lineRepository.save(line);
+    }
+
+    public LineResponse findById(Long id) {
+        Line line = lineRepository.findById(id).get();
+        return createLineResponse(line);
+    }
+
     private LineResponse createLineResponse(Line line) {
         return new LineResponse(
                 line.getId(),
