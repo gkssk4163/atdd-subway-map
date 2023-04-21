@@ -1,5 +1,7 @@
 package subway.line;
 
+import subway.station.Station;
+
 import javax.persistence.*;
 
 @Entity
@@ -11,18 +13,24 @@ public class Line {
     private String name;
     @Column(length = 20, nullable = false)
     private String color;
-    @Column(nullable = false)
-    private int upStationId;
-    @Column(nullable = false)
-    private int downStationId;
+    @OneToOne
+    @JoinColumn(referencedColumnName = "id")
+    private Station upStation;
+    @OneToOne
+    @JoinColumn(referencedColumnName = "id")
+    private Station downStation;
     @Column(nullable = false)
     private int distance;
 
     public Line() {
     }
 
-    public Line(String name) {
+    public Line(String name, String color, Station upStation, Station downStation, int distance) {
         this.name = name;
+        this.color = color;
+        this.upStation = upStation;
+        this.downStation = downStation;
+        this.distance = distance;
     }
 
     public Long getId() {
@@ -37,12 +45,12 @@ public class Line {
         return color;
     }
 
-    public int getUpStationId() {
-        return upStationId;
+    public Station getUpStation() {
+        return upStation;
     }
 
-    public int getDownStationId() {
-        return downStationId;
+    public Station getDownStation() {
+        return downStation;
     }
 
     public int getDistance() {
