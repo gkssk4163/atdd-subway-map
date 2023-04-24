@@ -28,10 +28,7 @@ public class StationAcceptanceTest {
     @Test
     void createStation() {
         // when
-        Map<String, String> params = new HashMap<>();
-        params.put("name", "강남역");
-
-        ExtractableResponse<Response> response = requestCreateStation(params);
+        ExtractableResponse<Response> response = 지하철역_생성("강남역");
 
         // then
         successCreateStation(response);
@@ -50,14 +47,8 @@ public class StationAcceptanceTest {
     @Test
     void getStations() {
         // given
-        String[] stationNames = {"강남역", "잠실역"};
-        for (String stationName : stationNames) {
-            Map<String, String> params = new HashMap<>();
-            params.put("name", stationName);
-
-            ExtractableResponse<Response> response = requestCreateStation(params);
-            successCreateStation(response);
-        }
+        지하철역_생성("강남역");
+        지하철역_생성("잠실역");
 
         // when
         JsonPath allStations = requestGetStations();
@@ -76,11 +67,7 @@ public class StationAcceptanceTest {
     @Test
     void deleteStation() {
         // given
-        Map<String, String> params = new HashMap<>();
-        params.put("name", "강남역");
-
-        ExtractableResponse<Response> response = requestCreateStation(params);
-        successCreateStation(response);
+        ExtractableResponse<Response> response = 지하철역_생성("강남역");
 
         long id = response.body().jsonPath().getLong("id");
 
@@ -93,12 +80,16 @@ public class StationAcceptanceTest {
         assertThat(stationNames).doesNotContain("강남역");
     }
 
-    private static ExtractableResponse<Response> requestCreateStation(Map<String, String> params) {
+    public static ExtractableResponse<Response> 지하철역_생성(String name) {
+        Map<String, String> params = new HashMap<>();
+        params.put("name", name);
+
         return RestAssured.given().log().all()
                 .body(params)
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .when().post("/stations")
                 .then().log().all()
+                .statusCode(HttpStatus.CREATED.value())
                 .extract();
     }
 
