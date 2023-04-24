@@ -10,14 +10,17 @@ import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.test.annotation.DirtiesContext;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static subway.station.StationAcceptanceTest.지하철역_생성;
 
 @DisplayName("지하철 노선 관련 기능")
+@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
 public class LineAcceptanceTest {
 
@@ -26,18 +29,6 @@ public class LineAcceptanceTest {
         지하철역_생성("지하철역");
         지하철역_생성("새로운지하철역");
         지하철역_생성("또다른지하철역");
-    }
-
-    private void 지하철역_생성(String name) {
-        Map<String, String> params = new HashMap<>();
-        params.put("name", name);
-
-        RestAssured.given().log().all()
-                .body(params)
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .when().post("/stations")
-                .then().log().all()
-                .statusCode(HttpStatus.CREATED.value());
     }
 
     @DisplayName("지하철노선을 생성한다")
