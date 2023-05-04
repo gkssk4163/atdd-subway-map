@@ -5,6 +5,7 @@ import org.springframework.transaction.annotation.Transactional;
 import subway.station.StationRepository;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 
 @Service
@@ -25,8 +26,8 @@ public class LineService {
         Line line = lineRepository.save(
                 new Line(lineRequest.getName(),
                         lineRequest.getColor(),
-                        stationRepository.findById(lineRequest.getUpStationId()).get(),
-                        stationRepository.findById(lineRequest.getDownStationId()).get(),
+                        stationRepository.findById(lineRequest.getUpStationId()).orElseThrow(() -> new NoSuchElementException("Station not found.")),
+                        stationRepository.findById(lineRequest.getDownStationId()).orElseThrow(() -> new NoSuchElementException("Station not found.")),
                         lineRequest.getDistance()
                 ));
         return createLineResponse(line);
@@ -47,7 +48,7 @@ public class LineService {
     }
 
     public LineResponse findById(Long id) {
-        Line line = lineRepository.findById(id).get();
+        Line line = lineRepository.findById(id).orElseThrow(() -> new NoSuchElementException("Line not found."));
         return createLineResponse(line);
     }
 
